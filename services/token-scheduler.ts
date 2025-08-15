@@ -117,7 +117,9 @@ export class TokenScheduler {
       if (this.tokenService.needsRefresh(tokens)) {
         console.log("🔄 Tokens need refresh - attempting automatic refresh...");
         
-        const refreshedTokens = await this.tokenService.refreshTokens(tokens.refreshToken);
+        const refreshedTokens = await this.tokenService.refreshTokens(
+          this.tokenService.decrypt(tokens.refreshToken)
+        );
         
         if (refreshedTokens) {
           console.log("✅ Tokens automatically refreshed successfully");

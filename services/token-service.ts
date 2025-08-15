@@ -86,7 +86,7 @@ export class LightspeedTokenService {
   /**
    * Decrypt a string value
    */
-  private decrypt(encryptedText: string): string {
+  public decrypt(encryptedText: string): string {
     if (!this.ENCRYPTION_KEY) {
       throw new Error("TOKEN_ENCRYPTION_KEY environment variable is required");
     }
