@@ -1,0 +1,46 @@
+[Unit]
+Description=Lightspeed Token Service
+Documentation=https://github.com/your-repo/lightspeed-token-service
+After=network.target postgresql.service
+Wants=postgresql.service
+
+[Service]
+Type=simple
+User=lightspeed
+Group=lightspeed
+WorkingDirectory=/opt/lightspeed-token-service
+Environment=NODE_ENV=production
+EnvironmentFile=/opt/lightspeed-token-service/.env
+
+# Main service command
+ExecStart=/usr/local/bin/bun run server.ts
+
+# Restart policy
+Restart=always
+RestartSec=5
+StartLimitInterval=60s
+StartLimitBurst=3
+
+# Resource limits
+LimitNOFILE=65535
+MemoryMax=1G
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=lightspeed-tokens
+
+# Security
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/lightspeed-token-service/logs
+
+# Graceful shutdown
+TimeoutStopSec=30
+KillMode=mixed
+KillSignal=SIGINT
+
+[Install]
+WantedBy=multi-user.target

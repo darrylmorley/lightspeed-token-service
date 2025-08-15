@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  lightspeed-token-service:
+    build: .
+    container_name: lightspeed-tokens
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=${DATABASE_URL}
+      - TOKEN_ENCRYPTION_KEY=${TOKEN_ENCRYPTION_KEY}
+      - LIGHTSPEED_CLIENT_ID=${LIGHTSPEED_CLIENT_ID}
+      - LIGHTSPEED_CLIENT_SECRET=${LIGHTSPEED_CLIENT_SECRET}
+      - LIGHTSPEED_REDIRECT_URI=${LIGHTSPEED_REDIRECT_URI}
+    volumes:
+      - ./logs:/usr/src/app/logs
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 5
+        window: 120s
+    healthcheck:
+      test: ["CMD", "bun", "run", "cli.ts", "status"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Optional: PostgreSQL database if you want to include it
+  # postgres:
+  #   image: postgres:15-alpine
+  #   container_name: lightspeed-postgres
+  #   restart: unless-stopped
+  #   environment:
+  #     POSTGRES_DB: lightspeed_tokens
+  #     POSTGRES_USER: lightspeed
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   ports:
+  #     - "5432:5432"
+
+# volumes:
+#   postgres_data:

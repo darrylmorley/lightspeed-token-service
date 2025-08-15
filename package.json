@@ -1,0 +1,38 @@
+{
+  "name": "lightspeed-token-service",
+  "module": "index.ts",
+  "type": "module",
+  "bin": {
+    "lightspeed-tokens": "./cli.ts"
+  },
+  "scripts": {
+    "start": "bun run server.ts",
+    "cli": "bun run cli.ts",
+    "tokens": "bun run cli.ts",
+    "pm2:start": "pm2 start ecosystem.config.js",
+    "pm2:stop": "pm2 stop lightspeed-token-service",
+    "pm2:restart": "pm2 restart lightspeed-token-service",
+    "pm2:delete": "pm2 delete lightspeed-token-service",
+    "pm2:logs": "pm2 logs lightspeed-token-service",
+    "pm2:status": "pm2 status",
+    "docker:build": "docker build -t lightspeed-token-service .",
+    "docker:run": "docker-compose up -d",
+    "docker:stop": "docker-compose down",
+    "docker:logs": "docker-compose logs -f"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/node-cron": "^3.0.11",
+    "prisma": "^6.14.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.14.0",
+    "node-cron": "^3.0.3"
+  },
+  "optionalDependencies": {
+    "pm2": "^5.3.0"
+  }
+}

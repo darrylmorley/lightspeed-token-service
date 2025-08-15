@@ -1,0 +1,23 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model lightspeedTokens {
+  id           Int       @id @default(autoincrement())
+  accessToken  String    @map("access_token") @db.Text
+  refreshToken String    @map("refresh_token") @db.Text
+  expiresAt    DateTime? @map("expires_at")
+  updatedAt    DateTime  @default(now()) @updatedAt @map("updated_at")
+
+  @@index([expiresAt])
+  @@index([accessToken])
+  @@index([refreshToken])
+  @@index([updatedAt])
+  @@map("lightspeed_tokens")
+}
