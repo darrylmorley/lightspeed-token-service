@@ -571,7 +571,7 @@ export class LightspeedTokenService {
       }
 
       const refreshedTokens = await this.refreshTokens(
-        currentTokens.refreshToken
+        this.decrypt(currentTokens.refreshToken)
       );
 
       if (refreshedTokens) {
